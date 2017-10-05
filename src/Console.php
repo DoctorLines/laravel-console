@@ -143,19 +143,8 @@ class Console
 	{
 		foreach ($bindings as $binding) {
 			// Sometimes, object $binding is passed, and needs to be stringified
-			if (gettype($binding) == 'object') {
-				$class_name = get_class($binding);
-				switch ($class_name) {
-					case 'DateTime':
-						$binding = $binding->format('Y-m-d H:i:s e');
-						break;
-					default:
-						$binding = '(object)' . $class_name;
-				}
-			}
-
-			$binding = DB::connection()->getPdo()->quote($binding);
-
+			$binding = self::bindingToString($binding);
+ 			$binding = DB::connection()->getPdo()->quote($binding);
 			$sql = preg_replace('/\?/', $binding, $sql, 1);
 			$sql = htmlspecialchars(htmlspecialchars_decode($sql));
 		}
@@ -164,6 +153,25 @@ class Console
 			'query' => $sql,
 			'time'  => $time
 		];
+	}
+
+	/**
+	 * Binding to string converter
+	 * 
+	 * @param  mixed $binding
+	 * @return string
+	 */
+	public static function bindingToString($binding)
+	{
+		if (gettype($binding) == 'object') {
+			if ($binding instanceof \DateTime) {
+				$binding = $binding->format('Y-m-d H:i:s e');
+			} else {
+				$binding = '(object)' . $class_name;
+			}
+		}
+
+		return (string)$binding;
 	}
 
 	/**

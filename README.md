@@ -24,7 +24,7 @@ This package is intended for a local testing, and **shouldn't get nowhere near y
 To install through composer, simply run the following command:
 
 ```
-php composer require teepluss/console
+php composer require doctorlines/console
 ```
 
 Register the console service provider in `config/app.php`:
