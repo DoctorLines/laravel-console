@@ -167,7 +167,7 @@ class Console
 			if ($binding instanceof \DateTime) {
 				$binding = $binding->format('Y-m-d H:i:s e');
 			} else {
-				$binding = '(object)' . $class_name;
+				$binding = '(object)' . get_class($binding);
 			}
 		}
 
